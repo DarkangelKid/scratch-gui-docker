@@ -1,0 +1,35 @@
+version: '3.7'
+services:
+  gui:
+    build:
+      context: .
+      dockerfile: ./gui/Dockerfile
+    image: scratch-gui
+    networks: [nginx]
+    ports:
+      - 9998:9998
+      - 9999:9999
+  nginx:
+    container_name: vnoj_nginx
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - 80:80
+    volumes:
+      - assets:/assets/
+      - userdatacache:/userdatacache/
+      - contestdatacache:/contestdatacache/
+      - cache:/cache/
+      - ./media/:/media/
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    networks: [nginx]
+    depends_on: [site, wsevent]
+networks:
+  site:
+  db:
+  nginx:
+volumes:
+  assets:
+  userdatacache:
+  contestdatacache:
+  cache:

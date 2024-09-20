@@ -1,14 +1,13 @@
 FROM node:20.17.0-alpine
 
-ENV PORT 80
+ENV PORT 8601
 
 RUN apk add --no-cache git \
-    && git clone --depth=1 https://github.com/scratchfoundation/scratch-gui \
+    && git clone --depth=1 https://github.com/scratchfoundation/scratch-gui.git \
     && cd scratch-gui \
-    && npm install --no-optional \
-    && npm fund && npm audit fix \
+    && npm install \
     && npm run build
 
-WORKDIR /scratch-www
-EXPOSE 80
+WORKDIR /scratch-gui
+EXPOSE 8601
 CMD ["npm","start"]
